@@ -6,11 +6,11 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 01:01:15 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/04/01 06:49:08 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/07/02 22:44:45 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "template.h"
+#include "ft_nm.h"
 
 t_bin	parse_opts(int ac, char **av)
 {

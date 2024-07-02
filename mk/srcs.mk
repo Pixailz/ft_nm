@@ -1,25 +1,10 @@
 # SRCS
-SRC_C_MANDATORY := data/parsing/cmd/help.c \
-				   data/parsing/cmd/usage.c \
-				   data/parsing/parse.c \
-				   main.c
+SRC_C := data/parsing/cmd/help.c \
+		 data/parsing/cmd/usage.c \
+		 data/parsing/parse.c \
+		 main.c
 
-SRC_C_BONUS := main.c \
-			   utils/utils.1.c \
-			   utils/utils.1/utils.1.c \
-			   utils/utils.1/utils.2.c \
-			   utils/utils.1/utils.3.c \
-			   utils/utils.1/utils.4.c \
-			   utils/utils.2.c \
-			   utils/utils.3.c \
-			   utils/utils.4.c
-
-ifeq ($(BONUS),1)
-TARGET				:= $(TARGET_BONUS)
-SRC_C				:= $(addprefix $(SRC_DIR)/bonus/,$(SRC_C_BONUS))
-else
-SRC_C				:= $(addprefix $(SRC_DIR)/mandatory/,$(SRC_C_MANDATORY))
-endif
+SRC_C				:= $(addprefix $(SRC_DIR)/,$(SRC_C))
 
 CFLAGS				+= -DPROG_NAME='"$(TARGET)"'
 

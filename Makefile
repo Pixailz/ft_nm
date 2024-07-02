@@ -17,8 +17,6 @@ $(call PB_INIT)
 
 all:			setup $(TARGET)
 
-bonus:			all
-
 ### TARGETS
 $(TARGET):		$(OBJ_C)
 > $(call P_INF,Creating $(R)$(TARGET)$(RST))
@@ -79,9 +77,8 @@ ifeq ($(LOGO_PRINTED),)
 endif
 
 ### HELPER
-
 helper:
-> ./rsc/helper/helper -S SupaBlank
+> ./rsc/helper/helper -S ft_nm
 
 ### RUN
 run:					re

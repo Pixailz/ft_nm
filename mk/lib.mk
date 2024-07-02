@@ -1,5 +1,4 @@
 # LIB
-
 INC_TMP				:= $(INC_DIR)
 LIBFT				:= $(LIB_DIR)/ft_libft/libft.a
 MINI_LIBX			:= $(LIB_DIR)/minilibx-linux/libmlx_Linux.a

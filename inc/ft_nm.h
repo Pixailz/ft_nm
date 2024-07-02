@@ -32,7 +32,6 @@ t_bin		usage(void);
 t_bin		parse_opts(int ac, char **av);
 
 // main.c
-void		test_define();
 t_bin		run(int ac, char **av);
 int			main(int ac, char **av);
 

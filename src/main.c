@@ -6,20 +6,11 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 03:26:32 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/04/01 04:42:17 by brda-sil         ###   ########.fr       */
+/*   Updated: 2024/07/02 22:45:00 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "template.h"
-
-void	test_define()
-{
-	ft_printf("prog_name  %s\n", PROG_NAME);
-	ft_printf("pwd        %s\n", PWD);
-	ft_printf("debug      %d\n", DEBUG);
-	ft_printf("debug_fd   %d\n", DEBUG_FD);
-	ft_printf("version    %s\n", VERSION);
-}
+#include "ft_nm.h"
 
 t_bin	run(int ac, char **av)
 {
@@ -37,7 +28,6 @@ int	main(int ac, char **av)
 {
 	char	ret = 0;
 
-	// test_define();
 	ret = run(ac, av);
 	ft_free_opts();
 	return (ret);

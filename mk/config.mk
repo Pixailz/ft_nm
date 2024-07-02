@@ -1,8 +1,7 @@
 # BASE
-TARGET				:= prog
-TARGET_BONUS		:= prog_bonus
+TARGET				:= ft_nm
 CC					:= gcc
-VERSION				:= 1.2.3-rc4
+VERSION				:= 0.0.0
 AUTHOR				:= Pixailz
 LDFLAGS				:=
 CFLAGS				:= -Wall -Wextra $(LDFLAGS)
@@ -71,21 +70,6 @@ endif
 endif
 
 ## PARSE_VARIABLE
-### BONUS
-ifeq ($(findstring bonus,$(MAKECMDGOALS)),bonus)
-BONUS				:= 1
-else
-ifeq ($(findstring re_bonus,$(MAKECMDGOALS)),re_bonus)
-BONUS				:= 1
-else
-ifeq ($(findstring run_bonus,$(MAKECMDGOALS)),run_bonus)
-BONUS				:= 1
-else
-BONUS				:= 0
-endif
-endif
-endif
-
 ifeq ($(ANSI_NO_COLOR),1)
 CFLAGS				+= -DANSI_NO_COLOR
 endif
