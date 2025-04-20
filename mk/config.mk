@@ -1,7 +1,7 @@
 # BASE
 TARGET				:= ft_nm
 CC					:= gcc
-VERSION				:= 0.0.0
+VERSION				:= 0.0.1
 AUTHOR				:= Pixailz
 LDFLAGS				:=
 CFLAGS				:= -Wall -Wextra $(LDFLAGS)

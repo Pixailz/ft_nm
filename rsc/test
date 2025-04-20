@@ -1,0 +1,174 @@
+#!/bin/bash
+
+declare -a FILE_TO_TEST_WORKING=(
+	"working/32exe"
+	"working/64.o"
+	"working/64exe"
+	"working/a.out"
+	"working/containers"
+	"working/elf_Haiku_GCC2_ls"
+	"working/elf_Haiku_GCC7_WebPositive"
+	"working/elf_NetBSD_x86_64_echo"
+	"working/elf_solaris_x86_ls"
+	"working/elf32"
+	"working/elf64"
+	"working/ft_strlen.o"
+	"working/hello_32"
+	"working/hello_64"
+	"working/length.o"
+	"working/libft_malloc.so"
+	"working/libtest_dynamic.so"
+	"working/main_only.out"
+	"working/malloc.so"
+	"working/priority.o"
+	"working/relocatable.o"
+	"working/shoff_invalid"
+	"working/error_header"
+	"working/header_offset_error"
+	"working/not_so_easy_test_32-bit"
+	"working/not_so_easy_test"
+	"working/debug_sym.o"
+)
+
+declare -a FILE_TO_TEST_CRASHING=(
+	"crashing/bad_size"
+	"crashing/elf-FreeBSD-x86_64-echo"
+	"crashing/elf_FreeBSD_x86_64_echo"
+	"crashing/elf_HPUX_ia64_bash"
+	"crashing/elf-Linux-Alpha-bash"
+	"crashing/elf-Linux-ARM64-bash"
+	"crashing/elf_Linux_ARMv7_ls"
+	"crashing/elf_Linux_hppa_bash"
+	"crashing/elf-Linux-ia64-bash"
+	"crashing/elf_Linux_lib_x64.so"
+	"crashing/elf_Linux_lib_x86.so"
+	"crashing/elf_Linux_Mips4_bash"
+	"crashing/elf_Linux_PowerPC_bash"
+	"crashing/elf-Linux-SparcV8-bash"
+	"crashing/elf_Linux_SuperH4_bash"
+	"crashing/elf_Linux_x64_bash"
+	"crashing/elf_linux_x64_chacl_big_e_shoff"
+	"crashing/elf_linux_x64_chacl_e_shnum_null"
+	"crashing/elf_linux_x64_ls"
+	"crashing/elf_linux_x64_ls_architecture_null"
+	"crashing/elf_linux_x64_ls_bad_architecture"
+	"crashing/elf_linux_x64_ls_bad_endianness"
+	"crashing/elf_linux_x64_ls_bad_file_type"
+	"crashing/elf_linux_x64_ls_bad_magic_number_first_byte"
+	"crashing/elf_linux_x64_ls_bad_magic_number_fourth_byte"
+	"crashing/elf_linux_x64_ls_bad_magic_number_second_byte"
+	"crashing/elf_linux_x64_ls_bad_magic_number_third_byte"
+	"crashing/elf_linux_x64_ls_bad_version_1"
+	"crashing/elf_linux_x64_ls_bad_version_2"
+	"crashing/elf_linux_x64_ls_endianness_null"
+	"crashing/elf_linux_x64_ls_file_type_null"
+	"crashing/elf-Linux-x86-bash"
+	"crashing/elf_OpenBSD_x86_64_sh"
+	"crashing/empty"
+	"crashing/error_header"
+	"crashing/executable.c"
+	"crashing/header"
+	"crashing/header_and_prog"
+	"crashing/header_and_prog_copy"
+	"crashing/header_copy"
+	"crashing/header_offset_error"
+	"crashing/libSystem.B.dylib"
+	"crashing/MachO-iOS-arm1176JZFS-bash"
+	"crashing/MachO-iOS-armv7-armv7s-arm64-Helloworld"
+	"crashing/MachO-iOS-armv7s-Helloworld"
+	"crashing/MachO-OSX-ppc-and-i386-bash"
+	"crashing/MachO-OSX-ppc-openssl-1.0.1h"
+	"crashing/MachO-OSX-x64-ls"
+	"crashing/MachO-OSX-x86-ls"
+	"crashing/not_so_easy_test"
+	"crashing/not_so_easy_test_32-bit"
+	"crashing/pe-cygwin-ls.exe"
+	"crashing/pe-mingw32-strip.exe"
+	"crashing/pe-Windows-ARMv7-Thumb2LE-HelloWorld"
+	"crashing/pe-Windows-x64-cmd"
+	"crashing/pe-Windows-x86-cmd"
+	"crashing/relocatable.c"
+	"crashing/test"
+	"crashing/test_facile"
+	"crashing/unterminated_string"
+	"crashing/wrong_arch"
+)
+
+declare -a ARG_TO_TEST=(
+	""
+	"-a"
+	"-p"
+	"-ap"
+	"-g"
+	"-ag"
+	"-pg"
+	"-apg"
+	"-r"
+	"-ar"
+	"-pr"
+	"-gr"
+	"-apr"
+	"-agr"
+	"-apgr"
+	"-u"
+	"-au"
+	"-pu"
+	"-gu"
+	"-ru"
+	"-apu"
+	"-agu"
+	"-aru"
+	"-pgu"
+	"-pru"
+	"-gru"
+	"-apgu"
+	"-agru"
+	"-apru"
+	"-pgru"
+	"-apgru"
+	"-n"
+	"-an"
+	"-apn"
+	"-pn"
+	"-arn"
+	"-aprn"
+	"-prn"
+)
+
+PASS="[\x1b[32m+\x1b[0m]"
+pass()
+{
+	echo -e "${PASS}: ${*}"
+}
+FAIL="[\x1b[31m-\x1b[0m]"
+fail()
+{
+	echo -e "${FAIL}: ${*}"
+}
+
+RESULT_COL="\x1b[70G"
+
+echo "WORKING FILES"
+for file in "${FILE_TO_TEST_WORKING[@]}"; do
+	echo -ne "${file}:${RESULT_COL}"
+	for arg in "${ARG_TO_TEST[@]}"; do
+		if ./rsc/test_run "${file}" "${arg}" "1" &>/dev/null; then
+			echo -ne "${PASS}"
+		else
+			echo -ne "${FAIL} (${?})"
+		fi
+	done
+	echo
+done
+echo
+
+echo "CRASHING FILES"
+for file in "${FILE_TO_TEST_CRASHING[@]}"; do
+	echo -ne "${file}:${RESULT_COL}"
+	if ./rsc/test_run "${file}" "${arg}" "2" &>/dev/null; then
+		echo -ne "${PASS}"
+	else
+		echo -ne "${FAIL} (${?})"
+	fi
+	echo
+done

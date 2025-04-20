@@ -1,0 +1,82 @@
+#!/bin/bash
+
+set -u
+set -o pipefail
+
+DIR_BASE="$(realpath "${0%/*}")"
+DIR_LOG="${DIR_BASE}/log"
+DIR_TEST_BIN="${DIR_BASE}/test_bin"
+
+NM="$(type -p nm)"
+FT_NM="${DIR_BASE}/../ft_nm"
+
+fatal ()
+{
+	echo "fatal: $*" >&2
+	exit 1
+}
+
+TIMEFORMAT=$(echo -e 'Real\t%E\nUser\t%U\nSys\t\t%S')
+_time()
+{
+	time "${@}" 2>&1
+}
+
+_format_out()
+{
+	local	file_path="${1:-}"
+
+	# strings "${file_path}" >"${file_path}.tmp"
+	cp "${file_path}" "${file_path}.tmp"
+	if [ "${TEST_TYPE}" == "1" ]; then
+		cat "${file_path}.tmp" > "${file_path}"
+	elif [ "${TEST_TYPE}" == "2" ]; then
+		sed -E 's|^.*: ||g' "${file_path}.tmp" > "${file_path}"
+	fi
+	rm -f "${file_path}.tmp"
+}
+
+[ -x "${NM}" ] || \
+	fatal "nm, ${NM}, not found"
+[ -x "${FT_NM}" ] || \
+	fatal "ft_nm, ${FT_NM}, not found"
+
+: "${BIN:=${1:-}}"
+: "${NM_FLAGS:=${2:-}}"
+: "${TEST_TYPE:=${3:-1}}"
+
+[ -e "${DIR_TEST_BIN}/${BIN}" ] || \
+	fatal "bin, ${BIN}, not found"
+
+[ -e "$(dirname "${DIR_LOG}/${BIN}")" ] ||
+	mkdir -p "$(dirname "${DIR_LOG}/${BIN}")"
+mkdir -p "${DIR_LOG}"
+
+echo "Real nm"
+# shellcheck disable=SC2086
+LC_ALL="C" _time ${NM} ${NM_FLAGS} "${DIR_TEST_BIN}/${BIN}" > "${DIR_LOG}/${BIN}_real"
+RETV_REAL="${?}"
+echo
+
+echo "42 nm"
+# shellcheck disable=SC2086
+LC_ALL="C" _time ${FT_NM} ${NM_FLAGS} "${DIR_TEST_BIN}/${BIN}" > "${DIR_LOG}/${BIN}_ft" 420>exec.log
+RETV_FT="${?}"
+echo
+RETV=0
+
+if [ "${RETV_REAL}" -ne "${RETV_FT}" ]; then
+	echo "return value mismatch: real(${RETV_REAL}) vs ft(${RETV_FT})" >&2
+	((RETV+=1))
+fi
+
+_format_out "${DIR_LOG}/${BIN}_real"
+_format_out "${DIR_LOG}/${BIN}_ft"
+
+if diff -u "${DIR_LOG}/${BIN}_real" "${DIR_LOG}/${BIN}_ft" | tee "${DIR_LOG}/${BIN}_diff"; then
+	echo "No diff"
+else
+	((RETV+=2))
+fi
+
+exit "${RETV}"

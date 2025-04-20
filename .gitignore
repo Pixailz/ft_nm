@@ -1,3 +1,4 @@
 # COMPILED THING
 obj/*
 ft_nm
+rsc/log/*

@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/27 01:38:28 by brda-sil          #+#    #+#             */
-/*   Updated: 2024/07/02 22:44:45 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/18 19:44:16 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,23 @@
 
 void	help_header(void)
 {
-	ft_putendl_fd("Usage: " PROG_NAME " [OPTION...] ARGS", 1);
+	usage();
 }
 
 void	help_part_1(void)
 {
 	ft_putendl_fd("\
- Options valid for --echo requests:\n\n\
-  -?, --help                 give this help list\n\
-      --usage                give a short usage message\n\
-  -V, --version              print program version\n\
-  -v, --verbose              verbose output\n\
+ List symbols in [file(s)] (a.out by default).\n\
+  -?, --help                 Give this help list\n\
+      --usage                Give a short usage message\n\
+  -V, --version              Print program version\n\
+  -n, --numeric-sort         Sort symbols numerically by their addresses, rather\n\
+                             than alphabetically by their names.\n\
+  -g, --extern-only          Display only external symbols\n\
+  -u, --undefined-only       Display only undefined symbols\n\
+  -a, --debug-syms           Display debugger-only symbols\n\
+  -r, --reverse-sort         Reverse the sense of the sort\n\
+  -p, --no-sort              Do not sort the symbols\n\
 ", 1);
 }
 
