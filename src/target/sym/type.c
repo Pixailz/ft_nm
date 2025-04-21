@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:57:07 by brda-sil          #+#    #+#             */
-/*   Updated: 2025/04/18 17:35:07 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 13:46:33 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,9 @@ char	get_sym_type(t_sym *symbole)
 	h_type = get_s_hdr_type(symbole->shdr);
 	h_flags = get_s_hdr_flags(symbole->shdr);
 	retv = '?';
-	if (!ft_strncmp(symbole->name, ".SUNW_signature", 15))
-		return ('n');
-	else if (!ft_strncmp(symbole->name, ".debug", 6))
+	if (!ft_strncmp(symbole->name, ".debug", 6))
 		return ('N');
-	else if (symbole->bind == STB_GNU_UNIQUE)
+	if (symbole->bind == STB_GNU_UNIQUE)
 		retv = 'u';
 	else if (symbole->bind == STB_WEAK)
 	{
@@ -61,12 +59,16 @@ char	get_sym_type(t_sym *symbole)
 	else if (
 		h_type == SHT_FINI_ARRAY	||
 		h_type == SHT_INIT_ARRAY	||
-		h_type == SHT_DYNAMIC		||
-		h_type == SHF_MERGE
+		h_type == SHT_PREINIT_ARRAY	||
+		h_type == SHT_DYNAMIC
 	)
 		retv = 'D';
 	else if (h_flags & SHF_ALLOC && !(h_flags & SHF_WRITE))
 		retv = 'R';
+	else if (h_type == SHT_GROUP)
+		retv = 'N';
+	else if (symbole->type == STT_SECTION)
+		retv = 'n';
 	if (retv != '?' && symbole->bind == STB_LOCAL)
 		retv = ft_tolower(retv);
 	return (retv);
