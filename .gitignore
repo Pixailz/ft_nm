@@ -3,3 +3,4 @@ obj/*
 ft_nm
 rsc/log/*
 exec.log
+vgcore.*

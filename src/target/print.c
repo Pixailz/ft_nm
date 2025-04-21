@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:54:21 by brda-sil          #+#    #+#             */
-/*   Updated: 2025/04/20 16:48:33 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:38:11 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	print_sym_name(t_sym *symbole)
 	ft_printf("%s\n", symbole->name);
 }
 
-t_bool	is_sym_debug(t_sym *symbole, t_nm *main)
+t_bool	is_sym_debug(t_sym *symbole, t_elfbin *bin)
 {
 	switch (symbole->type)
 	{
@@ -89,37 +89,37 @@ t_bool	is_sym_debug(t_sym *symbole, t_nm *main)
 	// 	return (TRUE);
 	// if (symbole->type == STT_FILE)
 	// 	return (TRUE);
-	for (int i = 0; main->s_hdrs_name[i]; i++)
+	for (int i = 0; bin->s_hdrs_name[i]; i++)
 	{
-		if (ft_strcmp(main->s_hdrs_name[i], symbole->name) == 0)
+		if (ft_strcmp(bin->s_hdrs_name[i], symbole->name) == 0)
 			return (TRUE);
 	}
 	return (FALSE);
 }
 
-void	print_syms_sort(t_nm *main)
+void	print_syms_sort(t_elfbin *bin)
 {
 	if (!ft_is_optpresent("no-sort"))
 	{
-		// for (int i = 0; i < main->sym_nb; i++)
+		// for (int i = 0; i < bin->sym_nb; i++)
 		// {
-		// 	if (!sym_should_print_value(&(main->syms[i])))
-		// 		main->syms[i].value = 0;
+		// 	if (!sym_should_print_value(&(bin->syms[i])))
+		// 		bin->syms[i].value = 0;
 		// }
 
 		if (ft_is_optpresent("numeric-sort"))
 		{
 			if (ft_is_optpresent("reverse-sort"))
-				sort_syms(main->syms, main->sym_nb, compare_sym_value_rev);
+				sort_syms(bin->syms, bin->sym_nb, compare_sym_value_rev);
 			else
-				sort_syms(main->syms, main->sym_nb, compare_sym_value);
+				sort_syms(bin->syms, bin->sym_nb, compare_sym_value);
 		}
 		else
 		{
 			if (ft_is_optpresent("reverse-sort"))
-				sort_syms(main->syms, main->sym_nb, compare_sym_name_rev);
+				sort_syms(bin->syms, bin->sym_nb, compare_sym_name_rev);
 			else
-				sort_syms(main->syms, main->sym_nb, compare_sym_name);
+				sort_syms(bin->syms, bin->sym_nb, compare_sym_name);
 		}
 	}
 	else
@@ -127,14 +127,14 @@ void	print_syms_sort(t_nm *main)
 		if (ft_is_optpresent("numeric-sort"))
 		{
 			if (ft_is_optpresent("reverse-sort"))
-				sort_syms(main->syms, main->sym_nb, compare_sym_value_rev);
+				sort_syms(bin->syms, bin->sym_nb, compare_sym_value_rev);
 			else
-				sort_syms(main->syms, main->sym_nb, compare_sym_value);
+				sort_syms(bin->syms, bin->sym_nb, compare_sym_value);
 		}
 	}
 }
 
-t_error	print_syms(t_nm *main)
+t_elf_error	print_syms(t_elfbin *bin)
 {
 	int		counter;
 	t_sym	*symbole;
@@ -145,14 +145,14 @@ t_error	print_syms(t_nm *main)
 	display_all = FALSE;
 	if (ft_is_optpresent("debug-syms"))
 		display_all = TRUE;
-	print_syms_sort(main);
+	print_syms_sort(bin);
 	counter = 0;
 	display_global_only = ft_is_optpresent("extern-only");
 	display_undefined_only = ft_is_optpresent("undefined-only");
-	while (counter < main->sym_nb)
+	while (counter < bin->sym_nb)
 	{
-		symbole = &main->syms[counter++];
-		if (!display_all && is_sym_debug(symbole, main))
+		symbole = &bin->syms[counter++];
+		if (!display_all && is_sym_debug(symbole, bin))
 			continue;
 		if (display_global_only && symbole->bind == STB_LOCAL)
 			continue;

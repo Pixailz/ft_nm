@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   bin.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/01 03:26:32 by brda-sil          #+#    #+#             */
-/*   Updated: 2025/04/20 21:34:38 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/21 14:00:35 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nm.h"
-
-#include <locale.h>
 
 t_bool			OPT_EXECUTED = FALSE;
 
@@ -50,7 +48,7 @@ t_bin	run(void)
 
 int	main(int ac, char **av)
 {
-	t_error	retv;
+	t_elf_error	retv;
 
 	CHECK_RET(retv, init, ac, av);
 	if (OPT_EXECUTED)

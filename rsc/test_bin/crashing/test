@@ -183,7 +183,7 @@
          U calloc
 00025a68 b caught_signals
 000264cc b charset_aliases
-00025a24 b check_symlink_color
+00025a24 b ft_check_symlink_color
 0000e200 t check_tuning
 00007af0 t clear_files
 00019a84 t clear_ungetc_buffer_preserving_position
