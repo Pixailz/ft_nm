@@ -38,7 +38,7 @@ $(OBJ_C):		$(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
 $(LIBFT):
 ifeq ($(USE_LIBFT),1)
 > PROG_NAME=$(TARGET) DEBUG=$(DEBUG) DEBUG_FD=$(DEBUG_FD) AUTHOR=$(AUTHOR) \
-	VERSION=$(VERSION) make -C lib/ft_libft all
+	VERSION=$(VERSION) make -C lib/ft_libft bin_elf print sort parsing check
 endif
 
 $(MINI_LIBX):

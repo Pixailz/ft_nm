@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 16:33:57 by brda-sil          #+#    #+#             */
-/*   Updated: 2025/04/20 16:43:16 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/24 23:31:18 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,12 @@ int	compare_sym_name(const void *sym_a, const void *sym_b)
 
 int	compare_sym_value(const void *sym_a, const void *sym_b)
 {
-	t_sym	*sa;
-	t_sym	*sb;
-	t_bool	ta;
-	t_bool	tb;
+	t_sym		*sa;
+	t_sym		*sb;
+	t_bool		ta;
+	t_bool		tb;
+	t_sym_value	va;
+	t_sym_value	vb;
 
 	sa = (t_sym *)sym_a;
 	sb = (t_sym *)sym_b;
@@ -35,12 +37,13 @@ int	compare_sym_value(const void *sym_a, const void *sym_b)
 		return (-1);
 	else if (tb)
 		return (1);
+	va = sa->view.get_value(&sa->view);
+	vb = sb->view.get_value(&sb->view);
 
-	if (sa->value == sb->value)
+	if (va == vb)
 		return (ft_strcmp(sa->name, sb->name));
-	return (sa->value > sb->value);
+	return (va > vb);
 }
-
 
 int	compare_sym_name_rev(const void *sym_a, const void *sym_b)
 {

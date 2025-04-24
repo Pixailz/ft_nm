@@ -8,6 +8,7 @@ SRC_C := data/free.c \
 		 data/singleton/target.c \
 		 ft_stralnumcmp.c \
 		 main.c \
+		 target/error.c \
 		 target/print.c \
 		 target/process.c \
 		 target/sort.c

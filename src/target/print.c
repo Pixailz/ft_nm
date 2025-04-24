@@ -6,7 +6,7 @@
 /*   By: brda-sil <brda-sil@students.42angouleme    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 13:54:21 by brda-sil          #+#    #+#             */
-/*   Updated: 2025/04/21 14:38:11 by brda-sil         ###   ########.fr       */
+/*   Updated: 2025/04/25 00:12:51 by brda-sil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_bool sym_should_print_value(t_sym *symbole)
 {
 	t_bool	print_value;
 
+	print_value = TRUE;
 	switch(symbole->type)
 	{
 		case('a'):
@@ -51,9 +52,9 @@ void	print_sym_value(t_sym *symbole)
 	if (sym_should_print_value(symbole))
 	{
 		if (NM_CLASS == ELFCLASS64)
-			ft_printf("%016x ", symbole->value);
+			ft_printf("%016x ", symbole->view.get_value(&symbole->view));
 		else
-			ft_printf("%08x ", symbole->value);
+			ft_printf("%08x ", symbole->view.get_value(&symbole->view));
 	}
 	else
 	{
@@ -79,16 +80,11 @@ t_bool	is_sym_debug(t_sym *symbole, t_elfbin *bin)
 	switch (symbole->type)
 	{
 		case('a'):
-		// case('n'):
 		{
-			if (!symbole->value)
+			if (!symbole->view.get_value(&symbole->view))
 				return (TRUE);
 		}
 	}
-	// if (!symbole->value)
-	// 	return (TRUE);
-	// if (symbole->type == STT_FILE)
-	// 	return (TRUE);
 	for (int i = 0; bin->s_hdrs_name[i]; i++)
 	{
 		if (ft_strcmp(bin->s_hdrs_name[i], symbole->name) == 0)
@@ -101,11 +97,6 @@ void	print_syms_sort(t_elfbin *bin)
 {
 	if (!ft_is_optpresent("no-sort"))
 	{
-		// for (int i = 0; i < bin->sym_nb; i++)
-		// {
-		// 	if (!sym_should_print_value(&(bin->syms[i])))
-		// 		bin->syms[i].value = 0;
-		// }
 
 		if (ft_is_optpresent("numeric-sort"))
 		{
@@ -156,7 +147,10 @@ t_elf_error	print_syms(t_elfbin *bin)
 			continue;
 		if (display_global_only && symbole->bind == STB_LOCAL)
 			continue;
-		if (display_undefined_only && symbole->shndx != SHN_UNDEF)
+		if (
+			display_undefined_only &&
+			symbole->view.get_shndx(&symbole->view) != SHN_UNDEF
+		)
 			continue;
 
 		print_sym_value(symbole);
